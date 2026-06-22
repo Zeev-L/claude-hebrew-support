@@ -5,28 +5,120 @@ Automatic right-to-left (RTL) detection and alignment for Hebrew and Arabic text
 blocks, LaTeX/KaTeX math, and English text left-to-right. Works live, including while
 Claude streams a response.
 
-> תמיכה אוטומטית בעברית/ערבית ב-Claude — יישור לימין בזמן אמת, תוך שמירה על קוד ונוסחאות משמאל לימין.
+> 🇮🇱 **גרסה עברית מלאה — בתחתית העמוד** ⬇️ &nbsp; ([קפיצה לעברית](#hebrew))
+> &nbsp;|&nbsp; Hebrew version available at the bottom of this page.
 
 ---
 
-# 🚀 התקנה מהירה (Quick install)
+# 🚀 Quick install
 
-הסבר פשוט, צעד-צעד. בחר את מה שצריך — דסקטופ, web, או שניהם.
+Pick what you need — Desktop, web, or both.
 
-## ⬇️ קודם: להוריד את הקבצים
+## ⬇️ First: download the files
 
-**הדרך הקלה (מומלצת):**
-1. בראש העמוד הזה ב-GitHub, לחץ על הכפתור הירוק **`<> Code`** ← **`Download ZIP`**.
-2. פתח את קובץ ה-ZIP שהורד (לחיצה כפולה). תיווצר תיקייה בשם `claude-hebrew-support`.
+**Easy way (recommended):** at the top of this GitHub page click the green **`<> Code`**
+button ← **`Download ZIP`**, then double-click the ZIP to unpack it into a
+`claude-hebrew-support` folder.
+
+**Advanced (Terminal):**
+```bash
+git clone https://github.com/Zeev-L/claude-hebrew-support
+```
+
+## 🖥️ Desktop (macOS)
+
+**Prerequisite:** [Node.js](https://nodejs.org/) installed (check with `node -v`).
+
+1. Open the **Terminal** app (Cmd+Space, type "Terminal", Enter).
+2. Paste these two lines (adjust the path to where you unpacked the download — usually `~/Downloads`):
+   ```bash
+   cd ~/Downloads/claude-hebrew-support/desktop-mac
+   ./patch.sh --install
+   ```
+3. A new app **Claude-RTL** (RTL-badged icon) is created and opens automatically.
+
+From now on, open **Claude-RTL** (not the regular Claude) for proper Hebrew. Both can coexist.
+
+| Action | Command |
+|---|---|
+| Uninstall | `./patch.sh --uninstall` |
+| Status | `./patch.sh --status` |
+
+> ⚠️ **After every Claude Desktop update**, re-run `./patch.sh --install` (the update overwrites
+> the patched copy). Your original `/Applications/Claude.app` is never touched.
+
+## 🌐 Web (claude.ai, Chrome)
+
+1. **Install Tampermonkey** (once): [Chrome Web Store](https://chromewebstore.google.com/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo) → **Add to Chrome** → **Add extension**.
+2. **Install the script:** open
+   [`web/claude-rtl.user.js`](https://github.com/Zeev-L/claude-hebrew-support/raw/main/web/claude-rtl.user.js)
+   → Tampermonkey shows an install page → click **Install**.
+3. **⚠️ Enable user scripts in Chrome (critical, easy to miss):** Chrome blocks userscripts by default.
+   Go to `chrome://extensions`, turn on **Developer mode** (top-right); on newer Chrome also open
+   Tampermonkey's **Details** → enable **Allow User Scripts**.
+4. **Reload [claude.ai](https://claude.ai)** (Cmd+R). Hebrew now aligns right.
+
+> Without step 3 the script appears "installed & enabled" but never runs — the most common mistake.
+
+---
+
+# How it works & how it's built
+
+## RTL detection logic
+
+1. **Script detection** by Unicode range (Hebrew `U+0590–05FF`, Arabic blocks).
+2. **First-strong** direction: the first strong character (Hebrew vs. Latin) sets the
+   paragraph direction; leading URLs, file paths and inline code are stripped first.
+3. **Code blocks** (`pre`, `code`, `.code-block__code`) are forced LTR even inside Hebrew.
+4. **Math** (KaTeX / MathJax) is isolated LTR via `unicode-bidi: isolate`.
+5. **Streaming**: a debounced `MutationObserver` re-runs detection as the DOM updates.
+
+## One logic, two delivery pipes
+
+The RTL detection logic is a single file — [`shared/rtl-payload.js`](shared/rtl-payload.js) —
+used by both targets. Edit it once; rebuild the web userscript with `web/build-web.sh`.
+
+| Target | How the payload is delivered |
+|--------|------------------------------|
+| **Desktop (macOS)** | `desktop-mac/patch.sh` injects it into a **copy** of `Claude.app`'s `app.asar`, disables the Electron ASAR-integrity fuse, and ad-hoc re-signs. The original `/Applications/Claude.app` is never touched. |
+| **Web (claude.ai)** | `web/build-web.sh` wraps the same payload in a Tampermonkey/Violentmonkey userscript. |
+
+## Safety / what it changes
+
+- **Desktop:** operates only on a copy at `~/Applications/Claude-RTL.app`. Because the app.asar
+  is modified, the Electron `EnableEmbeddedAsarIntegrityValidation` fuse is disabled and the copy
+  is re-signed **ad-hoc** — so the copy is no longer signed by Anthropic. The original keeps its
+  Anthropic signature + notarization. Rollback = `--uninstall` or delete the copy.
+- **Web:** the userscript uses `@grant GM_addStyle` (not `@grant none`) because claude.ai's CSP
+  blocks page-context injection; a non-`none` grant runs it in the manager's isolated sandbox
+  (full DOM access, CSP-exempt). Verified: paragraphs and the `[data-testid="chat-input"]`
+  composer both go RTL on claude.ai.
+
+## Credits & license
+
+MIT. RTL detection logic by [@shraga100](https://github.com/shraga100/claude-desktop-rtl-patch)
+(Windows original); macOS patcher by [@soguy](https://github.com/soguy/claude-desktop-rtl-mac).
+This repository packages both into one cross-surface framework. See [LICENSE](LICENSE).
+
+---
+<a id="hebrew"></a>
+
+# 🇮🇱 גרסה עברית
+
+תמיכה אוטומטית בעברית/ערבית ב-Claude — יישור לימין בזמן אמת ב-**Claude Desktop (macOS)** וב-**claude.ai בדפדפן**, תוך שמירה על בלוקי קוד, נוסחאות וטקסט אנגלי משמאל לימין. עובד גם תוך כדי שהתשובה נכתבת.
+
+## 🚀 התקנה מהירה
+
+### ⬇️ קודם: להוריד את הקבצים
+
+**הדרך הקלה (מומלצת):** בראש העמוד הזה ב-GitHub לחץ על הכפתור הירוק **`<> Code`** ← **`Download ZIP`**, ואז פתח את ה-ZIP (לחיצה כפולה). תיווצר תיקייה בשם `claude-hebrew-support`.
 
 **הדרך למתקדמים (Terminal):**
 ```bash
 git clone https://github.com/Zeev-L/claude-hebrew-support
 ```
 
----
-
-## 🖥️ התקנה — Claude Desktop (macOS)
+### 🖥️ התקנה — Claude Desktop (macOS)
 
 **מה צריך מראש:** [Node.js](https://nodejs.org/) מותקן. (בדיקה: ב-Terminal הקלד `node -v` — אם מופיע מספר, אתה מוכן.)
 
@@ -47,89 +139,29 @@ git clone https://github.com/Zeev-L/claude-hebrew-support
 
 > ⚠️ **אחרי כל עדכון של Claude Desktop** — הרץ שוב `./patch.sh --install` (העדכון "דורס" את הגרסה המתוקנת). העותק המקורי ב-`/Applications` אף פעם לא נוגעים בו.
 
----
-
-## 🌐 התקנה — claude.ai (בדפדפן Chrome)
+### 🌐 התקנה — claude.ai (בדפדפן Chrome)
 
 1. **התקן את התוסף Tampermonkey** (פעם אחת): [לחץ כאן](https://chromewebstore.google.com/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo) ← **Add to Chrome** ← **Add extension**.
-
-2. **התקן את הסקריפט שלנו:** פתח בדפדפן את הקישור הזה —
-   [התקנת הסקריפט (claude-rtl.user.js)](https://github.com/Zeev-L/claude-hebrew-support/raw/main/web/claude-rtl.user.js)
+2. **התקן את הסקריפט:** פתח בדפדפן את הקישור —
+   [claude-rtl.user.js](https://github.com/Zeev-L/claude-hebrew-support/raw/main/web/claude-rtl.user.js)
    — Tampermonkey יציג עמוד התקנה, לחץ על הכפתור הירוק **Install**.
-
 3. **⚠️ הדלק userscripts ב-Chrome (קריטי — קל לפספס!):** Chrome חוסם userscripts כברירת מחדל.
    - בשורת הכתובת הקלד `chrome://extensions` ולחץ Enter.
    - בפינה הימנית-עליונה **הדלק את "Developer mode"**.
    - (ב-Chrome חדש) על כרטיס Tampermonkey לחץ **Details** ← הדלק **"Allow User Scripts"**.
-
 4. **רענן את [claude.ai](https://claude.ai)** (Cmd+R) — וזהו, עברית תתיישר לימין.
 
 > בלי שלב 3 הסקריפט יופיע כ"מותקן ופעיל" אבל **לא ירוץ**. זו הטעות הכי נפוצה.
 
----
+## איך זה עובד (בקצרה)
 
-## One logic, two delivery pipes
+מזהה עברית/ערבית לפי טווחי Unicode, קובע כיוון לפי התו ה"חזק" הראשון בפסקה, ומיישר לימין — אבל **בלוקי קוד ונוסחאות נשארים תמיד משמאל לימין**. תוך כדי סטרימינג, מנגנון מעקב (MutationObserver) מריץ את הזיהוי מחדש על כל טקסט חדש.
 
-The RTL detection logic is a single file — [`shared/rtl-payload.js`](shared/rtl-payload.js) —
-used by both targets:
+## בטיחות
 
-| Target | How the payload is delivered |
-|--------|------------------------------|
-| **Desktop (macOS)** | `desktop-mac/patch.sh` injects it into a **copy** of `Claude.app`'s `app.asar`, disables the Electron ASAR-integrity fuse, and ad-hoc re-signs. The original `/Applications/Claude.app` is never touched. |
-| **Web (claude.ai)** | `web/build-web.sh` wraps the same payload in a Tampermonkey/Violentmonkey userscript. |
+- **דסקטופ:** עובד רק על **עותק** ב-`~/Applications/Claude-RTL.app`. המקור ב-`/Applications` נשאר חתום ע"י Anthropic ולא נגעים בו. כדי לאפשר את השינוי, מכבים בעותק את בדיקת התקינות של Electron וחותמים אותו מחדש "אד-הוק". חזרה אחורה = `--uninstall` או מחיקת העותק.
+- **web:** תיקון תצוגה בלבד בדפדפן שלך — לא משנה כלום בתוכן השמור.
 
-Edit the shared payload once; rebuild the web userscript with `web/build-web.sh`.
+## קרדיט ורישיון
 
-## How the RTL detection works
-
-1. **Script detection** by Unicode range (Hebrew `U+0590–05FF`, Arabic blocks).
-2. **First-strong** direction: the first strong character (Hebrew vs. Latin) sets the
-   paragraph direction; leading URLs, file paths and inline code are stripped first.
-3. **Code blocks** (`pre`, `code`, `.code-block__code`) are forced LTR even inside Hebrew.
-4. **Math** (KaTeX / MathJax) is isolated LTR via `unicode-bidi: isolate`.
-5. **Streaming**: a debounced `MutationObserver` re-runs detection as the DOM updates.
-
-## Desktop (macOS) — install
-
-```bash
-cd desktop-mac
-./patch.sh --install      # builds ~/Applications/Claude-RTL.app (original untouched)
-./patch.sh --status       # show patch status
-./patch.sh --uninstall    # remove the patched copy
-```
-
-Requirements: Node.js (provides `npx`) and Xcode Command Line Tools (`codesign`).
-
-**What it changes / safety:** operates only on a copy at `~/Applications/Claude-RTL.app`.
-Because the app.asar is modified, the Electron `EnableEmbeddedAsarIntegrityValidation`
-fuse is disabled and the copy is re-signed **ad-hoc** — so the copy is no longer signed
-by Anthropic. Your original `/Applications/Claude.app` keeps its Anthropic signature and
-notarization. Rollback = `--uninstall` or delete the copy.
-
-> ⚠️ After every Claude Desktop update, re-run `./patch.sh --install` to re-patch a fresh copy.
-
-## Web (claude.ai) — install
-
-1. Install a userscript manager: [Tampermonkey](https://www.tampermonkey.net/) or Violentmonkey.
-2. Install the script: open
-   [`web/claude-rtl.user.js`](web/claude-rtl.user.js) (or its raw URL) — the userscript
-   manager will offer to install it. To rebuild from the shared payload: `cd web && ./build-web.sh`.
-3. **Enable user scripts in Chrome (required, easy to miss):** Chrome (Manifest V3) silently
-   blocks userscripts until you turn this on. Go to `chrome://extensions`, enable
-   **Developer mode** (top-right toggle); on newer Chrome also open Tampermonkey's **Details**
-   and enable **Allow User Scripts**. Without this the script is "installed & enabled" but never runs.
-4. Reload claude.ai.
-
-> **Why `@grant GM_addStyle` and not `@grant none`:** claude.ai's CSP blocks page-context
-> injection (`@grant none`), so the script must run in the userscript manager's isolated
-> sandbox. Any non-`none` grant flips it into sandbox mode (full DOM access, CSP-exempt).
->
-> Web DOM selectors can drift; if input-box direction misbehaves, adjust `WRITING_SEL`
-> in `shared/rtl-payload.js` and rebuild. (Verified working: paragraphs and the
-> `[data-testid="chat-input"]` composer both go RTL on claude.ai.)
-
-## Credits & license
-
-MIT. RTL detection logic by [@shraga100](https://github.com/shraga100/claude-desktop-rtl-patch)
-(Windows original); macOS patcher by [@soguy](https://github.com/soguy/claude-desktop-rtl-mac).
-This repository packages both into one cross-surface framework. See [LICENSE](LICENSE).
+רישיון MIT. לוגיקת זיהוי ה-RTL מאת [@shraga100](https://github.com/shraga100/claude-desktop-rtl-patch) (מקור ל-Windows); מתקין ה-macOS מאת [@soguy](https://github.com/soguy/claude-desktop-rtl-mac). הריפו הזה אורז את שניהם למסגרת אחת + מוסיף את גרסת ה-web.
