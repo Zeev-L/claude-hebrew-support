@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Claude RTL (Hebrew / Arabic)
-// @namespace    https://github.com/Zeev-L/claude-rtl
+// @namespace    https://github.com/Zeev-L/claude-hebrew-support
 // @version      1.0.0
 // @description  Auto right-to-left for Hebrew/Arabic on claude.ai — keeps code, LaTeX and English LTR. Works while responses stream.
 // @author       Zeev-L (RTL logic by @shraga100, macOS port by @soguy)
