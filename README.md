@@ -7,6 +7,67 @@ Claude streams a response.
 
 > תמיכה אוטומטית בעברית/ערבית ב-Claude — יישור לימין בזמן אמת, תוך שמירה על קוד ונוסחאות משמאל לימין.
 
+---
+
+# 🚀 התקנה מהירה (Quick install)
+
+הסבר פשוט, צעד-צעד. בחר את מה שצריך — דסקטופ, web, או שניהם.
+
+## ⬇️ קודם: להוריד את הקבצים
+
+**הדרך הקלה (מומלצת):**
+1. בראש העמוד הזה ב-GitHub, לחץ על הכפתור הירוק **`<> Code`** ← **`Download ZIP`**.
+2. פתח את קובץ ה-ZIP שהורד (לחיצה כפולה). תיווצר תיקייה בשם `claude-hebrew-support`.
+
+**הדרך למתקדמים (Terminal):**
+```bash
+git clone https://github.com/Zeev-L/claude-hebrew-support
+```
+
+---
+
+## 🖥️ התקנה — Claude Desktop (macOS)
+
+**מה צריך מראש:** [Node.js](https://nodejs.org/) מותקן. (בדיקה: ב-Terminal הקלד `node -v` — אם מופיע מספר, אתה מוכן.)
+
+1. פתח את אפליקציית **Terminal** (Cmd+רווח, הקלד "Terminal", Enter).
+2. העתק והדבק את שתי השורות הבאות, אחת-אחת, ולחץ Enter. **החלף את הנתיב** לתיקייה שהורדת (אם הורדת ZIP, היא כנראה ב-`~/Downloads`):
+   ```bash
+   cd ~/Downloads/claude-hebrew-support/desktop-mac
+   ./patch.sh --install
+   ```
+3. זהו! נוצרה אפליקציה חדשה בשם **Claude-RTL** (עם תווית RTL על האייקון). היא תיפתח אוטומטית.
+
+**מעכשיו:** פתח תמיד את **Claude-RTL** (לא את Claude הרגיל) כדי לקבל עברית מסודרת. שתיהן יכולות לחיות זו לצד זו.
+
+| פעולה | פקודה |
+|---|---|
+| הסרה | `./patch.sh --uninstall` |
+| בדיקת מצב | `./patch.sh --status` |
+
+> ⚠️ **אחרי כל עדכון של Claude Desktop** — הרץ שוב `./patch.sh --install` (העדכון "דורס" את הגרסה המתוקנת). העותק המקורי ב-`/Applications` אף פעם לא נוגעים בו.
+
+---
+
+## 🌐 התקנה — claude.ai (בדפדפן Chrome)
+
+1. **התקן את התוסף Tampermonkey** (פעם אחת): [לחץ כאן](https://chromewebstore.google.com/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo) ← **Add to Chrome** ← **Add extension**.
+
+2. **התקן את הסקריפט שלנו:** פתח בדפדפן את הקישור הזה —
+   [התקנת הסקריפט (claude-rtl.user.js)](https://github.com/Zeev-L/claude-hebrew-support/raw/main/web/claude-rtl.user.js)
+   — Tampermonkey יציג עמוד התקנה, לחץ על הכפתור הירוק **Install**.
+
+3. **⚠️ הדלק userscripts ב-Chrome (קריטי — קל לפספס!):** Chrome חוסם userscripts כברירת מחדל.
+   - בשורת הכתובת הקלד `chrome://extensions` ולחץ Enter.
+   - בפינה הימנית-עליונה **הדלק את "Developer mode"**.
+   - (ב-Chrome חדש) על כרטיס Tampermonkey לחץ **Details** ← הדלק **"Allow User Scripts"**.
+
+4. **רענן את [claude.ai](https://claude.ai)** (Cmd+R) — וזהו, עברית תתיישר לימין.
+
+> בלי שלב 3 הסקריפט יופיע כ"מותקן ופעיל" אבל **לא ירוץ**. זו הטעות הכי נפוצה.
+
+---
+
 ## One logic, two delivery pipes
 
 The RTL detection logic is a single file — [`shared/rtl-payload.js`](shared/rtl-payload.js) —
