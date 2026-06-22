@@ -1,0 +1,10 @@
+# macOS
+.DS_Store
+
+# Node (only used transiently via npx)
+node_modules/
+
+# Build/work artifacts
+*.asar
+*.bak
+tmp/
