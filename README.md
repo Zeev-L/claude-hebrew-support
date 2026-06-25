@@ -14,6 +14,13 @@ Claude streams a response.
 
 Pick what you need — Desktop, web, or both.
 
+> 🤖 **With Claude Code:** an agent can clone the repo and run the scripts for
+> you (`desktop-mac/patch.sh --install`, `web/build-web.sh`) and explain each
+> step. The rest is hands-on by design and **only you** can do it: installing
+> the Tampermonkey extension, enabling Chrome **Developer mode**, and approving
+> the macOS re-sign / Gatekeeper prompt. Those are GUI / OS trust actions that
+> can't be scripted.
+
 ## ⬇️ First: download the files
 
 **Easy way (recommended):** at the top of this GitHub page click the green **`<> Code`**
@@ -108,6 +115,12 @@ This repository packages both into one cross-surface framework. See [LICENSE](LI
 תמיכה אוטומטית בעברית/ערבית ב-Claude — יישור לימין בזמן אמת ב-**Claude Desktop (macOS)** וב-**claude.ai בדפדפן**, תוך שמירה על בלוקי קוד, נוסחאות וטקסט אנגלי משמאל לימין. עובד גם תוך כדי שהתשובה נכתבת.
 
 ## 🚀 התקנה מהירה
+
+> 🤖 **עם Claude Code:** סוכן יכול לשכפל את ה-repo ולהריץ עבורך את הסקריפטים
+> (`desktop-mac/patch.sh --install`, `web/build-web.sh`) ולהסביר כל שלב. השאר
+> ידני בכוונה ו**רק אתה** יכול לעשות אותו: התקנת התוסף Tampermonkey, הדלקת
+> **Developer mode** ב-Chrome, ואישור החתימה-מחדש / Gatekeeper ב-macOS — פעולות
+> ממשק/אמון של מערכת ההפעלה שאי אפשר לבצע בסקריפט.
 
 ### ⬇️ קודם: להוריד את הקבצים
 
