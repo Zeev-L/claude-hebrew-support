@@ -56,7 +56,8 @@ From now on, open **Claude-RTL** (not the regular Claude) for proper Hebrew. Bot
 
 ## 🖥️➕ Run two (or more) in parallel
 
-Want two Claude windows side by side — different conversations, both with RTL? Create extra instances:
+Want two Claude windows side by side — different conversations, both with RTL? After a fresh
+`patch.sh --install` you're **offered a second instance automatically**. To add more (or create one later):
 
 ```bash
 cd desktop-mac
@@ -181,7 +182,7 @@ git clone https://github.com/Zeev-L/claude-hebrew-support
 
 ### 🖥️➕ הרצת שניים (או יותר) במקביל
 
-רוצה שני חלונות Claude זה לצד זה — שיחות שונות, שניהם עם RTL? צור מופעים נוספים:
+רוצה שני חלונות Claude זה לצד זה — שיחות שונות, שניהם עם RTL? אחרי `patch.sh --install` ראשוני **תוצע לך יצירת מופע שני אוטומטית**. ליצירת עוד (או מאוחר יותר):
 
 ```bash
 cd desktop-mac
