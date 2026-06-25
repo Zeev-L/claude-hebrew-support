@@ -34,15 +34,23 @@ git clone https://github.com/Zeev-L/claude-hebrew-support
 
 ## 🖥️ Desktop (macOS)
 
-**Prerequisite:** [Node.js](https://nodejs.org/) installed (check with `node -v`).
+**Prerequisites (new machine — do these first):**
+1. Install **Claude Desktop** from [claude.ai/download](https://claude.ai/download) and **sign in**.
+   (The patched copy shares your login and chats with it, so sign in once here first.)
+2. Install **Node.js** from [nodejs.org](https://nodejs.org/) (the green "LTS" button). Check in
+   Terminal with `node -v` — a version number means you're set.
 
+**Install:**
 1. Open the **Terminal** app (Cmd+Space, type "Terminal", Enter).
 2. Paste these two lines (adjust the path to where you unpacked the download — usually `~/Downloads`):
    ```bash
    cd ~/Downloads/claude-hebrew-support/desktop-mac
    ./patch.sh --install
    ```
-3. A new app **Claude-RTL** (RTL-badged icon) is created and opens automatically.
+3. A new app **Claude-RTL** (RTL-badged icon) is created and opens automatically. It also **offers
+   to create a second parallel instance** (Claude-RTL-2) — say yes if you want two side by side.
+4. **Approve the one-time macOS prompts:** the first time it touches files / Keychain, click
+   **Allow** (and **Always Allow** for any "Claude Safe Storage" keychain prompt). It's remembered.
 
 From now on, open **Claude-RTL** (not the regular Claude) for proper Hebrew. Both can coexist.
 
@@ -161,15 +169,20 @@ git clone https://github.com/Zeev-L/claude-hebrew-support
 
 ### 🖥️ התקנה — Claude Desktop (macOS)
 
-**מה צריך מראש:** [Node.js](https://nodejs.org/) מותקן. (בדיקה: ב-Terminal הקלד `node -v` — אם מופיע מספר, אתה מוכן.)
+**מה צריך מראש (במכונה חדשה — קודם כל):**
+1. התקן את **Claude Desktop** מ-[claude.ai/download](https://claude.ai/download) ו**התחבר**.
+   (הגרסה המתוקנת חולקת איתו את ההתחברות והצ'אטים — אז התחבר פעם אחת כאן קודם.)
+2. התקן **Node.js** מ-[nodejs.org](https://nodejs.org/) (הכפתור הירוק "LTS"). בדיקה ב-Terminal: `node -v` — מספר גרסה = מוכן.
 
+**התקנה:**
 1. פתח את אפליקציית **Terminal** (Cmd+רווח, הקלד "Terminal", Enter).
 2. העתק והדבק את שתי השורות הבאות, אחת-אחת, ולחץ Enter. **החלף את הנתיב** לתיקייה שהורדת (אם הורדת ZIP, היא כנראה ב-`~/Downloads`):
    ```bash
    cd ~/Downloads/claude-hebrew-support/desktop-mac
    ./patch.sh --install
    ```
-3. זהו! נוצרה אפליקציה חדשה בשם **Claude-RTL** (עם תווית RTL על האייקון). היא תיפתח אוטומטית.
+3. נוצרה אפליקציה חדשה בשם **Claude-RTL** (עם תווית RTL על האייקון), והיא נפתחת לבד. בסוף היא גם **תציע ליצור מופע שני מקבילי** (Claude-RTL-2) — אשר אם בא לך שניים זה לצד זה.
+4. **אשר את בקשות ה-macOS החד-פעמיות:** בפעם הראשונה שהיא ניגשת לקבצים/Keychain — לחץ **Allow** (ו-**Always Allow** לבקשת "Claude Safe Storage"). זה נשמר.
 
 **מעכשיו:** פתח תמיד את **Claude-RTL** (לא את Claude הרגיל) כדי לקבל עברית מסודרת. שתיהן יכולות לחיות זו לצד זו.
 
