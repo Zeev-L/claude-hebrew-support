@@ -271,6 +271,17 @@ install_patch() {
         || /usr/libexec/PlistBuddy -c "Set :CFBundleDisplayName Claude-RTL" "$PATCHED_APP/Contents/Info.plist"
     success "App will show as \"Claude-RTL\" in Dock and Finder."
 
+    # --- Unique bundle identifier (so macOS remembers folder permissions per app) ---
+    step "Setting a unique bundle identifier..."
+    # macOS ties privacy grants (Desktop/Documents/Downloads access) to bundle id + signature.
+    # If the patched copy keeps Anthropic's id (com.anthropic.claudefordesktop) it COLLIDES
+    # with the original app — and with any extra patched copy — so macOS can't persist the
+    # grant and re-prompts "would like to access your Desktop" on almost every launch/switch.
+    # A unique id gives this app its own permission slot. NOTE: userData and your login stay
+    # SHARED with the original Claude, because those key off the app NAME ("Claude"), not the id.
+    /usr/libexec/PlistBuddy -c "Set :CFBundleIdentifier com.anthropic.claudefordesktop.rtl" "$PATCHED_APP/Contents/Info.plist"
+    success "Bundle id → com.anthropic.claudefordesktop.rtl (its own permission slot)."
+
     # --- Extract ASAR ---
     TMP_DIR=$(mktemp -d)
     step "Extracting app.asar..."

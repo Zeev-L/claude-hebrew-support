@@ -54,6 +54,21 @@ From now on, open **Claude-RTL** (not the regular Claude) for proper Hebrew. Bot
 > ⚠️ **After every Claude Desktop update**, re-run `./patch.sh --install` (the update overwrites
 > the patched copy). Your original `/Applications/Claude.app` is never touched.
 
+## 🖥️➕ Run two (or more) in parallel
+
+Want two Claude windows side by side — different conversations, both with RTL? Create extra instances:
+
+```bash
+cd desktop-mac
+./make-instance.sh 2                              # creates "Claude-RTL-2"
+./make-instance.sh 3 --name "Claude RTL · work"   # more, with a custom name
+./make-instance.sh --uninstall 2                  # remove one
+```
+
+Each instance is a separate app with its **own** macOS identity. Your **login, chats and projects
+are shared** across all of them (they key off the app name, not the id), so a new instance opens
+already logged in. Just don't edit the *same* conversation in two windows at once.
+
 ## 🌐 Web (claude.ai, Chrome)
 
 1. **Install Tampermonkey** (once): [Chrome Web Store](https://chromewebstore.google.com/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo) → **Add to Chrome** → **Add extension**.
@@ -100,6 +115,18 @@ used by both targets. Edit it once; rebuild the web userscript with `web/build-w
   blocks page-context injection; a non-`none` grant runs it in the manager's isolated sandbox
   (full DOM access, CSP-exempt). Verified: paragraphs and the `[data-testid="chat-input"]`
   composer both go RTL on claude.ai.
+
+## Troubleshooting
+
+**macOS keeps asking "Claude-RTL would like to access your Desktop folder" on almost every launch.**
+This happens when a patched copy keeps Anthropic's bundle id (`com.anthropic.claudefordesktop`):
+macOS ties folder-permission grants to bundle id + signature, so it can't tell the copies apart
+from the original (or from each other) and never remembers the grant — it re-prompts every time
+you switch apps. The fix is a unique bundle id per app, which both scripts now do automatically
+(`patch.sh` → `…rtl`, `make-instance.sh` → `…rtlN`). If you're hitting this on an older copy,
+re-run `./patch.sh --install` (and `make-instance.sh` for any extra instances), then approve the
+prompt **once** — it sticks afterward. Don't manually re-sign the apps later; every re-sign
+resets macOS's memory of the grant and the prompt comes back.
 
 ## Credits & license
 
@@ -151,6 +178,21 @@ git clone https://github.com/Zeev-L/claude-hebrew-support
 | בדיקת מצב | `./patch.sh --status` |
 
 > ⚠️ **אחרי כל עדכון של Claude Desktop** — הרץ שוב `./patch.sh --install` (העדכון "דורס" את הגרסה המתוקנת). העותק המקורי ב-`/Applications` אף פעם לא נוגעים בו.
+
+### 🖥️➕ הרצת שניים (או יותר) במקביל
+
+רוצה שני חלונות Claude זה לצד זה — שיחות שונות, שניהם עם RTL? צור מופעים נוספים:
+
+```bash
+cd desktop-mac
+./make-instance.sh 2                              # יוצר "Claude-RTL-2"
+./make-instance.sh 3 --name "Claude RTL · עבודה"  # עוד, עם שם מותאם
+./make-instance.sh --uninstall 2                  # להסיר מופע
+```
+
+כל מופע הוא אפליקציה נפרדת עם **תעודת זהות משלו** ב-macOS. **ההתחברות, הצ'אטים והפרויקטים משותפים** בין כולם (הם תלויים בשם האפליקציה, לא בתעודת הזהות), אז מופע חדש נפתח כשאתה כבר מחובר. רק אל תערוך את **אותה שיחה** בשני חלונות בו-זמנית.
+
+> 🔐 **הרשאות:** בהפעלה ראשונה כל מופע עשוי לבקש פעם אחת גישה ל-Desktop ו/או מפתח Keychain — אשר (Allow / Always Allow) וזה נשמר. אם macOS שואל **שוב ושוב** — זה סימן שהאפליקציה חתומה עם תעודת זהות שמתנגשת; הסקריפטים כאן כבר נותנים לכל אפליקציה תעודה ייחודית שפותרת את זה. **אל תחתום מחדש** ידנית אחרי שאישרת — כל חתימה מחדש מאפסת את ההרשאה.
 
 ### 🌐 התקנה — claude.ai (בדפדפן Chrome)
 
