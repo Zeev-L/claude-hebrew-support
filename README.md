@@ -52,7 +52,7 @@ git clone https://github.com/Zeev-L/claude-hebrew-support
    **Allow** (and **Always Allow** for any "Claude Safe Storage" keychain prompt). It's remembered.
 
 From now on, open **Claude-RTL** (not the regular Claude) for proper Hebrew. Both can coexist.
-For several conversations side by side, just press **⌘N** for more windows.
+For several conversations side by side, **⌘-click a conversation** in the sidebar to open it in its own window.
 
 | Action | Command |
 |---|---|
@@ -75,7 +75,7 @@ For several conversations side by side, just press **⌘N** for more windows.
 
 ## 🖥️➕ Work on several conversations side by side
 
-**Recommended: just open more windows.** In Claude-RTL press **⌘N** for a new window — put two (or
+**Recommended: just open more windows.** In Claude-RTL, **⌘-click a conversation** in the sidebar to open it in its own window — put two (or
 more) side by side, each on a different conversation, all with RTL. Same login and history, one app,
 nothing extra to install or update. For almost everyone this is all you need.
 
@@ -83,7 +83,7 @@ nothing extra to install or update. For almost everyone this is all you need.
 <summary><b>Advanced: separate app instances</b> (rarely needed)</summary>
 
 A separate instance (Claude-RTL-2, -3…) is a distinct app **process** with its own Dock icon. It
-shares the same login and chats as Claude-RTL, so it gives nothing extra over ⌘N windows **except**
+shares the same login and chats as Claude-RTL, so it gives nothing extra over extra windows **except**
 process isolation — worth it only if you run heavy Cowork/agent tasks in parallel and want one to
 survive if another crashes. The cost: another app to re-approve permissions for and rebuild after
 each Claude update.
@@ -200,7 +200,7 @@ git clone https://github.com/Zeev-L/claude-hebrew-support
    cd ~/Downloads/claude-hebrew-support/desktop-mac
    ./patch.sh --install
    ```
-3. נוצרה אפליקציה חדשה בשם **Claude-RTL** (עם תווית RTL על האייקון), והיא נפתחת לבד. לשיחות מקבילות — פשוט לחץ **⌘N** לחלונות נוספים.
+3. נוצרה אפליקציה חדשה בשם **Claude-RTL** (עם תווית RTL על האייקון), והיא נפתחת לבד. לשיחות מקבילות — עשה **Cmd+לחיצה על שיחה** ברשימה כדי לפתוח אותה בחלון נפרד.
 4. **אשר את בקשות ה-macOS החד-פעמיות:** בפעם הראשונה שהיא ניגשת לקבצים/Keychain — לחץ **Allow** (ו-**Always Allow** לבקשת "Claude Safe Storage"). זה נשמר.
 
 **מעכשיו:** פתח תמיד את **Claude-RTL** (לא את Claude הרגיל) כדי לקבל עברית מסודרת. שתיהן יכולות לחיות זו לצד זו.
@@ -220,12 +220,12 @@ git clone https://github.com/Zeev-L/claude-hebrew-support
 
 ### 🖥️➕ עבודה על כמה שיחות במקביל
 
-**מומלץ: פשוט לפתוח עוד חלונות.** ב-Claude-RTL לחץ **⌘N** לחלון חדש — שים שניים (או יותר) זה לצד זה, כל אחד בשיחה אחרת, כולם עם RTL. אותה התחברות והיסטוריה, אפליקציה אחת, בלי שום דבר להתקין או לעדכן. לרוב האנשים זה כל מה שצריך.
+**מומלץ: פשוט לפתוח עוד חלונות.** ב-Claude-RTL עשה **Cmd+לחיצה על שיחה** ברשימה כדי לפתוח אותה בחלון נפרד — שים שניים (או יותר) זה לצד זה, כל אחד בשיחה אחרת, כולם עם RTL. אותה התחברות והיסטוריה, אפליקציה אחת, בלי שום דבר להתקין או לעדכן. לרוב האנשים זה כל מה שצריך.
 
 <details>
 <summary><b>מתקדם: מופעים נפרדים של האפליקציה</b> (לרוב לא נחוץ)</summary>
 
-מופע נפרד (Claude-RTL-2, -3…) הוא **תהליך** אפליקציה נפרד עם אייקון משלו ב-Dock. הוא חולק את אותה התחברות והיסטוריה כמו Claude-RTL, אז הוא לא נותן שום דבר מעבר לחלונות ⌘N **חוץ מ**בידוד תהליכים — שווה רק אם אתה מריץ משימות Cowork/סוכן כבדות במקביל ורוצה שאחד ישרוד אם אחר קורס. המחיר: עוד אפליקציה לאשר לה הרשאות ולבנות מחדש אחרי כל עדכון של Claude.
+מופע נפרד (Claude-RTL-2, -3…) הוא **תהליך** אפליקציה נפרד עם אייקון משלו ב-Dock. הוא חולק את אותה התחברות והיסטוריה כמו Claude-RTL, אז הוא לא נותן שום דבר מעבר לחלונות נוספים **חוץ מ**בידוד תהליכים — שווה רק אם אתה מריץ משימות Cowork/סוכן כבדות במקביל ורוצה שאחד ישרוד אם אחר קורס. המחיר: עוד אפליקציה לאשר לה הרשאות ולבנות מחדש אחרי כל עדכון של Claude.
 
 ```bash
 ~/Library/Application\ Support/claude-rtl/make-instance.sh 2    # יצירת "Claude-RTL-2"

@@ -448,9 +448,9 @@ install_patch() {
     sync_to_stable
 
     # --- Tip: multiple conversations side by side ---
-    echo "  Tip: for several conversations side by side, just press ⌘N in Claude-RTL for extra"
-    echo "  windows (same login & chats). Separate app instances are an advanced option — see"
-    echo "  make-instance.sh / the README if you ever need process isolation."
+    echo "  Tip: for several conversations side by side, ⌘-click a conversation in the sidebar to"
+    echo "  open it in its own window (same login & chats). Separate app instances are an advanced"
+    echo "  option — see make-instance.sh / the README if you ever need process isolation."
 
     # --- Optional: offer the auto-update reminder (installed from the stable copy) ---
     # When Claude Desktop later updates, this pops a "update your RTL apps?" dialog.
