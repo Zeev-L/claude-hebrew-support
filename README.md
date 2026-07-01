@@ -59,16 +59,19 @@ From now on, open **Claude-RTL** (not the regular Claude) for proper Hebrew. Bot
 | Uninstall | `./patch.sh --uninstall` |
 | Status | `./patch.sh --status` |
 
-> ⚠️ **After every Claude Desktop update** the patched copies need rebuilding (the official
-> update only touches `/Applications/Claude.app`). Update them all in one command:
+> ⚠️ **After every Claude Desktop update**, rebuild the patched copies (the official update only
+> touches `/Applications/Claude.app`). One command rebuilds Claude-RTL + all parallel instances:
 > ```bash
-> cd desktop-mac && ./update-rtl.sh   # rebuilds Claude-RTL + every parallel instance
+> "$HOME/Library/Application Support/claude-rtl/update-rtl.sh"
 > ```
-> **Want it to remind you?** Install the optional checker — at login and once a day it detects a new
-> Claude version and pops a "Update your RTL apps now?" dialog ("Update now" runs it for you):
-> ```bash
-> ./install-update-checker.sh          # remove later with: ./install-update-checker.sh --uninstall
-> ```
+> `patch.sh` copies its tooling to that stable folder, so this keeps working even after you delete
+> the download.
+>
+> **Auto-reminder (recommended):** during `patch.sh --install` you're **offered an update checker** —
+> at login + once a day it detects a new Claude version and pops "Update your RTL apps now?" ("Update
+> now" does it for you). It's installed from the stable folder, so it survives to a fresh install on a
+> new machine. Manage it manually with
+> `"$HOME/Library/Application Support/claude-rtl/install-update-checker.sh"` (add `--uninstall` to remove).
 
 ## 🖥️➕ Run two (or more) in parallel
 
@@ -199,14 +202,13 @@ git clone https://github.com/Zeev-L/claude-hebrew-support
 | הסרה | `./patch.sh --uninstall` |
 | בדיקת מצב | `./patch.sh --status` |
 
-> ⚠️ **אחרי כל עדכון של Claude Desktop** צריך לבנות מחדש את העותקים המתוקנים (העדכון הרשמי נוגע רק ב-`/Applications/Claude.app`). לעדכון של כולם בפקודה אחת:
+> ⚠️ **אחרי כל עדכון של Claude Desktop** צריך לבנות מחדש את העותקים המתוקנים (העדכון הרשמי נוגע רק ב-`/Applications/Claude.app`). פקודה אחת בונה מחדש את Claude-RTL וכל המופעים המקבילים:
 > ```bash
-> cd desktop-mac && ./update-rtl.sh   # בונה מחדש את Claude-RTL וכל המופעים המקבילים
+> "$HOME/Library/Application Support/claude-rtl/update-rtl.sh"
 > ```
-> **רוצה שזה יזכיר לך?** התקן את הבודק האופציונלי — בהתחברות ופעם ביום הוא מזהה גרסה חדשה של Claude וקופץ עם חלונית "לעדכן את אפליקציות ה-RTL?" (לחיצה על "Update now" מריצה את זה בשבילך):
-> ```bash
-> ./install-update-checker.sh          # להסרה: ./install-update-checker.sh --uninstall
-> ```
+> `patch.sh` מעתיק את הכלים לתיקייה היציבה הזו, אז זה עובד גם אחרי שמחקת את ההורדה.
+>
+> **תזכורת אוטומטית (מומלץ):** במהלך `patch.sh --install` **תוצע לך התקנת בודק עדכונים** — בהתחברות ופעם ביום הוא מזהה גרסה חדשה של Claude וקופץ עם "לעדכן את אפליקציות ה-RTL?" ("Update now" עושה את זה בשבילך). הוא מותקן מהתיקייה היציבה, אז הוא שורד להתקנה טרייה במכונה חדשה. ניהול ידני: `"$HOME/Library/Application Support/claude-rtl/install-update-checker.sh"` (הוסף `--uninstall` להסרה).
 
 ### 🖥️➕ הרצת שניים (או יותר) במקביל
 

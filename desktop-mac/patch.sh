@@ -32,6 +32,11 @@ fi
 ICON_FILE="$SCRIPT_DIR/icon.icns"
 FONTS_DIR="$SCRIPT_DIR/fonts"
 
+# Stable, download-independent home for the tooling. patch.sh copies everything it
+# needs here on install, so updates + the update-checker keep working even if you
+# delete the cloned/downloaded folder. Survives to a new machine's fresh install.
+STABLE_DIR="$HOME/Library/Application Support/claude-rtl"
+
 # Font used for RTL (Hebrew/Arabic/Persian) text. Disabled by default — RTL
 # text keeps Claude's default font. Opt in either way:
 #   * Command line:  ./patch.sh --install --font Vazirmatn
@@ -226,6 +231,28 @@ build_font_injector() {
 }
 
 # ---------------------------------------------------------------------------
+# Copy the tooling to a stable, download-independent location so update-rtl.sh
+# and the update-checker keep working even after the cloned folder is gone.
+# ---------------------------------------------------------------------------
+sync_to_stable() {
+    [ "$SCRIPT_DIR" = "$STABLE_DIR" ] && return 0   # already running from there
+    mkdir -p "$STABLE_DIR/fonts"
+    local f
+    for f in patch.sh make-instance.sh update-rtl.sh check-update.sh install-update-checker.sh; do
+        [ -f "$SCRIPT_DIR/$f" ] && cp "$SCRIPT_DIR/$f" "$STABLE_DIR/$f"
+    done
+    chmod +x "$STABLE_DIR"/*.sh 2>/dev/null || true
+    # Payload flat next to the scripts (patch.sh falls back to $SCRIPT_DIR/rtl-payload.js).
+    if [ -f "$SCRIPT_DIR/../shared/rtl-payload.js" ]; then
+        cp "$SCRIPT_DIR/../shared/rtl-payload.js" "$STABLE_DIR/rtl-payload.js"
+    elif [ -f "$SCRIPT_DIR/rtl-payload.js" ]; then
+        cp "$SCRIPT_DIR/rtl-payload.js" "$STABLE_DIR/rtl-payload.js"
+    fi
+    [ -f "$ICON_FILE" ] && cp "$ICON_FILE" "$STABLE_DIR/icon.icns"
+    [ -d "$FONTS_DIR" ] && cp "$FONTS_DIR/"* "$STABLE_DIR/fonts/" 2>/dev/null || true
+}
+
+# ---------------------------------------------------------------------------
 # Install
 # ---------------------------------------------------------------------------
 install_patch() {
@@ -417,6 +444,9 @@ install_patch() {
     echo "  To remove the patch, run: $0 --uninstall"
     echo ""
 
+    # --- Copy tooling to a stable location (survives deleting the download) ---
+    sync_to_stable
+
     # --- Optional: offer a second parallel instance ---
     # Only when interactive (a TTY) and no second instance exists yet — so re-installs
     # after a Claude update don't nag. Creates Claude-RTL-2 (shared login/chats, own id).
@@ -431,6 +461,24 @@ install_patch() {
                     || warn "Couldn't create it now — run ./make-instance.sh 2 later." ;;
             *)
                 log "Skipped. Create one anytime with: ./make-instance.sh 2" ;;
+        esac
+    fi
+
+    # --- Optional: offer the auto-update reminder (installed from the stable copy) ---
+    # When Claude Desktop later updates, this pops a "update your RTL apps?" dialog.
+    # It's installed from $STABLE_DIR so it keeps working after the download is gone.
+    if [ -t 0 ] && [ -x "$STABLE_DIR/install-update-checker.sh" ] \
+       && [ ! -f "$HOME/Library/LaunchAgents/com.claude-rtl.update-check.plist" ]; then
+        echo ""
+        echo "  When Anthropic ships a new Claude Desktop version, your RTL copies need a rebuild."
+        printf "  Install an auto-reminder that offers to do it for you? [y/N] "
+        read -r reply3 || reply3=""
+        case "$reply3" in
+            [yY]|[yY][eE][sS])
+                "$STABLE_DIR/install-update-checker.sh" \
+                    || warn "Couldn't install it — run $STABLE_DIR/install-update-checker.sh later." ;;
+            *)
+                log "Skipped. Install later: \"$STABLE_DIR/install-update-checker.sh\"" ;;
         esac
     fi
 }
