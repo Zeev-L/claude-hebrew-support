@@ -447,22 +447,10 @@ install_patch() {
     # --- Copy tooling to a stable location (survives deleting the download) ---
     sync_to_stable
 
-    # --- Optional: offer a second parallel instance ---
-    # Only when interactive (a TTY) and no second instance exists yet — so re-installs
-    # after a Claude update don't nag. Creates Claude-RTL-2 (shared login/chats, own id).
-    if [ -t 0 ] && [ -x "$SCRIPT_DIR/make-instance.sh" ] && [ ! -d "$HOME/Applications/Claude-RTL-2.app" ]; then
-        echo "  Tip: you can run several Claude windows in parallel — same login & chats,"
-        echo "  each on a different conversation. Great for juggling multiple sessions."
-        printf "  Create a second instance \"Claude-RTL-2\" now? [y/N] "
-        read -r reply || reply=""
-        case "$reply" in
-            [yY]|[yY][eE][sS])
-                "$SCRIPT_DIR/make-instance.sh" 2 \
-                    || warn "Couldn't create it now — run ./make-instance.sh 2 later." ;;
-            *)
-                log "Skipped. Create one anytime with: ./make-instance.sh 2" ;;
-        esac
-    fi
+    # --- Tip: multiple conversations side by side ---
+    echo "  Tip: for several conversations side by side, just press ⌘N in Claude-RTL for extra"
+    echo "  windows (same login & chats). Separate app instances are an advanced option — see"
+    echo "  make-instance.sh / the README if you ever need process isolation."
 
     # --- Optional: offer the auto-update reminder (installed from the stable copy) ---
     # When Claude Desktop later updates, this pops a "update your RTL apps?" dialog.

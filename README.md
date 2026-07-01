@@ -47,12 +47,12 @@ git clone https://github.com/Zeev-L/claude-hebrew-support
    cd ~/Downloads/claude-hebrew-support/desktop-mac
    ./patch.sh --install
    ```
-3. A new app **Claude-RTL** (RTL-badged icon) is created and opens automatically. It also **offers
-   to create a second parallel instance** (Claude-RTL-2) — say yes if you want two side by side.
+3. A new app **Claude-RTL** (RTL-badged icon) is created and opens automatically.
 4. **Approve the one-time macOS prompts:** the first time it touches files / Keychain, click
    **Allow** (and **Always Allow** for any "Claude Safe Storage" keychain prompt). It's remembered.
 
 From now on, open **Claude-RTL** (not the regular Claude) for proper Hebrew. Both can coexist.
+For several conversations side by side, just press **⌘N** for more windows.
 
 | Action | Command |
 |---|---|
@@ -73,21 +73,29 @@ From now on, open **Claude-RTL** (not the regular Claude) for proper Hebrew. Bot
 > new machine. Manage it manually with
 > `"$HOME/Library/Application Support/claude-rtl/install-update-checker.sh"` (add `--uninstall` to remove).
 
-## 🖥️➕ Run two (or more) in parallel
+## 🖥️➕ Work on several conversations side by side
 
-Want two Claude windows side by side — different conversations, both with RTL? After a fresh
-`patch.sh --install` you're **offered a second instance automatically**. To add more (or create one later):
+**Recommended: just open more windows.** In Claude-RTL press **⌘N** for a new window — put two (or
+more) side by side, each on a different conversation, all with RTL. Same login and history, one app,
+nothing extra to install or update. For almost everyone this is all you need.
+
+<details>
+<summary><b>Advanced: separate app instances</b> (rarely needed)</summary>
+
+A separate instance (Claude-RTL-2, -3…) is a distinct app **process** with its own Dock icon. It
+shares the same login and chats as Claude-RTL, so it gives nothing extra over ⌘N windows **except**
+process isolation — worth it only if you run heavy Cowork/agent tasks in parallel and want one to
+survive if another crashes. The cost: another app to re-approve permissions for and rebuild after
+each Claude update.
 
 ```bash
-cd desktop-mac
-./make-instance.sh 2                              # creates "Claude-RTL-2"
-./make-instance.sh 3 --name "Claude RTL · work"   # more, with a custom name
-./make-instance.sh --uninstall 2                  # remove one
+~/Library/Application\ Support/claude-rtl/make-instance.sh 2    # create "Claude-RTL-2"
+~/Library/Application\ Support/claude-rtl/make-instance.sh --uninstall 2   # remove it
 ```
 
-Each instance is a separate app with its **own** macOS identity. Your **login, chats and projects
-are shared** across all of them (they key off the app name, not the id), so a new instance opens
-already logged in. Just don't edit the *same* conversation in two windows at once.
+Each instance gets its **own** macOS identity; login/chats/projects stay shared (they key off the
+app name, not the id). Don't edit the *same* conversation in two instances at once.
+</details>
 
 ## 🌐 Web (claude.ai, Chrome)
 
@@ -192,7 +200,7 @@ git clone https://github.com/Zeev-L/claude-hebrew-support
    cd ~/Downloads/claude-hebrew-support/desktop-mac
    ./patch.sh --install
    ```
-3. נוצרה אפליקציה חדשה בשם **Claude-RTL** (עם תווית RTL על האייקון), והיא נפתחת לבד. בסוף היא גם **תציע ליצור מופע שני מקבילי** (Claude-RTL-2) — אשר אם בא לך שניים זה לצד זה.
+3. נוצרה אפליקציה חדשה בשם **Claude-RTL** (עם תווית RTL על האייקון), והיא נפתחת לבד. לשיחות מקבילות — פשוט לחץ **⌘N** לחלונות נוספים.
 4. **אשר את בקשות ה-macOS החד-פעמיות:** בפעם הראשונה שהיא ניגשת לקבצים/Keychain — לחץ **Allow** (ו-**Always Allow** לבקשת "Claude Safe Storage"). זה נשמר.
 
 **מעכשיו:** פתח תמיד את **Claude-RTL** (לא את Claude הרגיל) כדי לקבל עברית מסודרת. שתיהן יכולות לחיות זו לצד זו.
@@ -210,20 +218,22 @@ git clone https://github.com/Zeev-L/claude-hebrew-support
 >
 > **תזכורת אוטומטית (מומלץ):** במהלך `patch.sh --install` **תוצע לך התקנת בודק עדכונים** — בהתחברות ופעם ביום הוא מזהה גרסה חדשה של Claude וקופץ עם "לעדכן את אפליקציות ה-RTL?" ("Update now" עושה את זה בשבילך). הוא מותקן מהתיקייה היציבה, אז הוא שורד להתקנה טרייה במכונה חדשה. ניהול ידני: `"$HOME/Library/Application Support/claude-rtl/install-update-checker.sh"` (הוסף `--uninstall` להסרה).
 
-### 🖥️➕ הרצת שניים (או יותר) במקביל
+### 🖥️➕ עבודה על כמה שיחות במקביל
 
-רוצה שני חלונות Claude זה לצד זה — שיחות שונות, שניהם עם RTL? אחרי `patch.sh --install` ראשוני **תוצע לך יצירת מופע שני אוטומטית**. ליצירת עוד (או מאוחר יותר):
+**מומלץ: פשוט לפתוח עוד חלונות.** ב-Claude-RTL לחץ **⌘N** לחלון חדש — שים שניים (או יותר) זה לצד זה, כל אחד בשיחה אחרת, כולם עם RTL. אותה התחברות והיסטוריה, אפליקציה אחת, בלי שום דבר להתקין או לעדכן. לרוב האנשים זה כל מה שצריך.
+
+<details>
+<summary><b>מתקדם: מופעים נפרדים של האפליקציה</b> (לרוב לא נחוץ)</summary>
+
+מופע נפרד (Claude-RTL-2, -3…) הוא **תהליך** אפליקציה נפרד עם אייקון משלו ב-Dock. הוא חולק את אותה התחברות והיסטוריה כמו Claude-RTL, אז הוא לא נותן שום דבר מעבר לחלונות ⌘N **חוץ מ**בידוד תהליכים — שווה רק אם אתה מריץ משימות Cowork/סוכן כבדות במקביל ורוצה שאחד ישרוד אם אחר קורס. המחיר: עוד אפליקציה לאשר לה הרשאות ולבנות מחדש אחרי כל עדכון של Claude.
 
 ```bash
-cd desktop-mac
-./make-instance.sh 2                              # יוצר "Claude-RTL-2"
-./make-instance.sh 3 --name "Claude RTL · עבודה"  # עוד, עם שם מותאם
-./make-instance.sh --uninstall 2                  # להסיר מופע
+~/Library/Application\ Support/claude-rtl/make-instance.sh 2    # יצירת "Claude-RTL-2"
+~/Library/Application\ Support/claude-rtl/make-instance.sh --uninstall 2   # הסרה
 ```
 
-כל מופע הוא אפליקציה נפרדת עם **תעודת זהות משלו** ב-macOS. **ההתחברות, הצ'אטים והפרויקטים משותפים** בין כולם (הם תלויים בשם האפליקציה, לא בתעודת הזהות), אז מופע חדש נפתח כשאתה כבר מחובר. רק אל תערוך את **אותה שיחה** בשני חלונות בו-זמנית.
-
-> 🔐 **הרשאות:** בהפעלה ראשונה כל מופע עשוי לבקש פעם אחת גישה ל-Desktop ו/או מפתח Keychain — אשר (Allow / Always Allow) וזה נשמר. אם macOS שואל **שוב ושוב** — זה סימן שהאפליקציה חתומה עם תעודת זהות שמתנגשת; הסקריפטים כאן כבר נותנים לכל אפליקציה תעודה ייחודית שפותרת את זה. **אל תחתום מחדש** ידנית אחרי שאישרת — כל חתימה מחדש מאפסת את ההרשאה.
+לכל מופע **תעודת זהות משלו** ב-macOS; ההתחברות/הצ'אטים/הפרויקטים נשארים משותפים (תלויים בשם האפליקציה, לא בתעודת הזהות). אל תערוך את **אותה שיחה** בשני מופעים בו-זמנית.
+</details>
 
 ### 🌐 התקנה — claude.ai (בדפדפן Chrome)
 
